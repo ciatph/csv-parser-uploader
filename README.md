@@ -33,18 +33,23 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 ### Land Preparation
 
 - /cr_landpreps - normalized and mapped land preparations
-- /cr_landpreps_recommendations unique recommendations masterlist for land preparations
+- /cr_landpreps_recommendations unique - recommendations masterlist for land preparations
 
 ### Method of Planting
 
 - /cr_planting_methods - normalized and mapped planting methods
-- /cr_planting_methods_recommendations unique recommendations masterlist for planting methods
+- /cr_planting_methods_recommendations - unique recommendations masterlist for planting methods
 
 ### Nutrition Management
 
 - /cr_nutrition_mgt - normalized and mapped nutrition management methods
-- /cr_nutrition_mgt_recommendations unique recommendations masterlist for nutrition managemen methods
+- /cr_nutrition_mgt_recommendations - unique recommendations masterlist for nutrition management methods
 
+### Water Management
+
+- /cr_water_mgt - normalized and mapped water management methods
+- /cr_water_mgt_recommendations - unique recommendations masterlist for water management methods
+- 
 
 ## Available Scripts
 
@@ -78,11 +83,20 @@ Create recommendations mappings for the (normalized) method of planting data and
 
 ### `npm run upload:nutrition`
 
-Create recommendations mappings for the (normalized) method of planting data and upload to Firestore.
+Create recommendations mappings for the (normalized) nutrition management data and upload to Firestore.
 
 ```
 /cr_nutrition_mgt
 /cr_nutrition_mgt_recommendations
+```
+
+### `npm run upload:water`
+
+Create recommendations mappings for the (normalized) water management data and upload to Firestore.
+
+```
+/cr_water_mgt
+/cr_water_mgt_recommendations
 ```
 
 @ciatph  

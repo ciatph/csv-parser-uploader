@@ -1,8 +1,8 @@
 const path = require('path')
-const FirestoreLandprep = require('./firestore-landprep')
+const FirestoreWaterMgt = require('./firestore-water')
 
 const main = async () => {
-  const handler = new FirestoreLandprep(path.resolve(__dirname, '02_land_preparation_CSV.csv'))
+  const handler = new FirestoreWaterMgt(path.resolve(__dirname, '05_water_management.csv'))
 
   try {
     await handler.readCSV()
@@ -17,8 +17,8 @@ const main = async () => {
       const data = handler.data()
   
       await Promise.all([
-        handler.firestoreUpload('cr_landpreps', true, data.landprep_list),
-        handler.firestoreUpload('cr_landpreps_recommendations', true, data.recommendations_list),
+        handler.firestoreUpload('cr_water_mgt', true, data.water_mgt_list),
+        handler.firestoreUpload('cr_water_mgt_recommendations', true, data.recommendations_list),
       ])
   
       console.log('data uploaded!')

@@ -8,6 +8,7 @@
     "upload:landprep": "node src/02_land_preparation",
     "upload:planting": "node src/03_method_of_planting",
     "upload:nutrition": "node src/04_nutrition_management",
+    "upload:water": "node src/05_water_management",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
