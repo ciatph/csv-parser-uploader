@@ -1,0 +1,20 @@
+{
+  "name": "csv-parser-uploader",
+  "version": "1.0.0",
+  "description": "Parse the normalized rainfed rice recommendations data for Firestore upload.",
+  "main": "index.js",
+  "scripts": {
+    "upload:varieties": "node src/01_selection_of_activities",
+    "upload:landprep": "node src/02_land_preparation",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "D:/LAB/Web/_ciat/scripts/csv-parser-uploader.git/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-firestore": "^1.0.6"
+  }
+}
