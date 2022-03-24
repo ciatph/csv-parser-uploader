@@ -9,7 +9,6 @@ class FirestoreLandprep extends CsvToFireStore {
       landprep_list: [],
       recommendations_list: [],
       recommendations: []
-
     }
   }
 

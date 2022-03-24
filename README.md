@@ -40,6 +40,11 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 - /cr_planting_methods - normalized and mapped planting methods
 - /cr_planting_methods_recommendations unique recommendations masterlist for planting methods
 
+### Nutrition Management
+
+- /cr_nutrition_mgt - normalized and mapped nutrition management methods
+- /cr_nutrition_mgt_recommendations unique recommendations masterlist for nutrition managemen methods
+
 
 ## Available Scripts
 
@@ -69,6 +74,15 @@ Create recommendations mappings for the (normalized) method of planting data and
 ```
 /cr_planting_methods
 /cr_planting_methods_recommendations
+```
+
+### `npm run upload:nutrition`
+
+Create recommendations mappings for the (normalized) method of planting data and upload to Firestore.
+
+```
+/cr_nutrition_mgt
+/cr_nutrition_mgt_recommendations
 ```
 
 @ciatph  
