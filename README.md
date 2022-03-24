@@ -49,7 +49,12 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 
 - /cr_water_mgt - normalized and mapped water management methods
 - /cr_water_mgt_recommendations - unique recommendations masterlist for water management methods
-- 
+
+### Pest and Weed Management
+
+- /cr_water_mgt - normalized and mapped water management methods
+- /cr_water_mgt_recommendations - unique recommendations masterlist for water management methods
+
 
 ## Available Scripts
 
@@ -97,6 +102,15 @@ Create recommendations mappings for the (normalized) water management data and u
 ```
 /cr_water_mgt
 /cr_water_mgt_recommendations
+```
+
+### `npm run upload:pestweed`
+
+Create recommendations mappings for the (normalized) pest and weed management data and upload to Firestore.
+
+```
+/cr_pestweed_mgt
+/cr_pestweed_mgt_recommendations
 ```
 
 @ciatph  

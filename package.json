@@ -9,6 +9,7 @@
     "upload:planting": "node src/03_method_of_planting",
     "upload:nutrition": "node src/04_nutrition_management",
     "upload:water": "node src/05_water_management",
+    "upload:pestweed": "node src/06_pest_and_weed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
