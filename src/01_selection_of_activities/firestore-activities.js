@@ -11,6 +11,7 @@ const { CsvToFireStore } = require('csv-firestore')
 class FirestoreActivities extends CsvToFireStore {
   constructor(csvFilePath) {
     super(csvFilePath)
+    console.log(`Reading ${csvFilePath}`)
 
     this.csv_rows = {
       varieties_list: [],

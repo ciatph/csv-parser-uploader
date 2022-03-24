@@ -1,6 +1,6 @@
 ## csv-parser-uploader
 
-Parse normalized rainfed rice recommendations data for the Crop Recommendations page and upload to Firestore.
+Parse normalized (general) rainfed rice recommendations data for the Crop Recommendations page and upload to Firestore.
 
 ## Requirements
 
@@ -30,11 +30,15 @@ Parse normalized rainfed rice recommendations data for the Crop Recommendations 
 - /cr_sel_varieties_recommendations - unique recommendations masterlist for selection of varieties
 - /cr_sel_varieties_provinces - unique provinces masterlist for selection of varieties
 
-
 ### Land Preparation
 
 - /cr_landpreps - normalized and mapped land preparations
 - /cr_landpreps_recommendations unique recommendations masterlist for land preparations
+
+### Method of Planting
+
+- /cr_planting_methods - normalized and mapped planting methods
+- /cr_planting_methods_recommendations unique recommendations masterlist for planting methods
 
 
 ## Available Scripts
@@ -56,6 +60,15 @@ Create recommendations mappings for the (normalized) land preparation data and u
 ```
 /cr_landpreps
 /cr_landpreps_recommendations
+```
+
+### `npm run upload:planting`
+
+Create recommendations mappings for the (normalized) method of planting data and upload to Firestore.
+
+```
+/cr_planting_methods
+/cr_planting_methods_recommendations
 ```
 
 @ciatph  

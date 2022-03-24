@@ -1,12 +1,12 @@
 const { CsvToFireStore } = require('csv-firestore')
 
-class FirestoreLandprep extends CsvToFireStore {
+class FirestoreMethodPlanting extends CsvToFireStore {
   constructor(csvFilePath) {
     super(csvFilePath)
     console.log(`Reading ${csvFilePath}`)
 
     this.csv_rows = {
-      landprep_list: [],
+      planting_methods_list: [],
       recommendations_list: [],
       recommendations: []
 
@@ -44,20 +44,20 @@ class FirestoreLandprep extends CsvToFireStore {
     const dry = this.csv_rows.recommendations.indexOf(row.con_drier) + 1
 
     const obj = {
-      landprep: row.land_preparation,
+      method: row.method,
       norm,
       wet,
       dry
     }
 
     // Build mapped land preparation selections
-    this.csv_rows.landprep_list.push(obj)
+    this.csv_rows.planting_methods_list.push(obj)
   }
 
   end () {
-    this.write(this.csv_rows.landprep_list, 'cr_landpreps.csv')
-    this.write(this.csv_rows.recommendations_list, 'cr_landpreps_recommendations.csv')
+    this.write(this.csv_rows.planting_methods_list, 'cr_planting_methods.csv')
+    this.write(this.csv_rows.recommendations_list, 'cr_planting_methods_recommendations.csv')
   }  
 }
 
-module.exports = FirestoreLandprep
+module.exports = FirestoreMethodPlanting
