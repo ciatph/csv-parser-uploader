@@ -15,7 +15,13 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 2. Install dependencies.  
    - `npm install`
    - Set-up **csv-firestore**'s local Firebase requirements
-3. Copy associated CSV files to the /01_selection_of_activities and /02_land_preparation directories.
+3. Copy associated CSV input files to their respective directories:
+   - /01_selection_of_activities
+   - /02_land_preparation
+   - /03_method_of_planting
+   - /04_nutrition_management
+   - /05_water_management
+   - /06_pest_and_weed
 
 ## Usage
 
