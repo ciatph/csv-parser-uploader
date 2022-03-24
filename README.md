@@ -8,6 +8,19 @@ Parse normalized rainfed rice recommendations data for the Crop Recommendations 
 2. Firebase requirements for [csv-firestore](https://www.npmjs.com/package/csv-firestore)
 3. Normalized rainfed rice recommendations data (CSV)
 
+## Installation
+
+1. Clone this repository.  
+`git clone https://github.com/ciatph/csv-parser-uploader.git`
+2. Install dependencies.  
+   - `npm install`
+   - Set-up **csv-firestore**'s local Firebase requirements
+3. Copy associated CSV files to the /01_selection_of_activities and /02_land_preparation directories.
+
+## Usage
+
+1. Run any of the [available scripts](#available-scripts).
+
 
 ## Firestore Collections Reference
 
