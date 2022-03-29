@@ -62,6 +62,12 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 - /cr_water_mgt_recommendations - unique recommendations masterlist for water management methods
 
 
+## Others
+
+- /villages - list of amia villages in bicol, with lat/lon and other relevant info
+- /misc_crop_calendars - list of download URLs for each crop calendar picture in the Cropping Calendar page
+
+
 ## Available Scripts
 
 ### `npm run upload:varieties`
@@ -117,6 +123,22 @@ Create recommendations mappings for the (normalized) pest and weed management da
 ```
 /cr_pestweed_mgt
 /cr_pestweed_mgt_recommendations
+```
+
+### `npm run upload:villages`
+
+Upload the list of amia villages with relevant lat/lon and other information.
+
+```
+/villages
+```
+
+### `npm run upload:calendars`
+
+Upload the download URL list of each cropping calendars' hi-resolution picture.
+
+```
+/misc_crop_calendars
 ```
 
 @ciatph  
