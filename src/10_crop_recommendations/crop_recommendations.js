@@ -16,6 +16,9 @@ class CropRecommedations extends CsvToFireStore {
     /** Activity { id, name } */
     this.activities = []
 
+    /** Crop stages { id, name } */
+    this.crop_stages = []
+
     /** Crop Recommendations { id, description } */
     this.recommendations = []
 
@@ -44,12 +47,15 @@ class CropRecommedations extends CsvToFireStore {
       case 'activity':
         exists = Object.values(this.activities).map(x => x.name).includes(value)
         break
-        case 'recommendation':
-          exists = Object.values(this.recommendations).map(x => x.description).includes(value)
+        case 'stage':
+          exists = Object.values(this.crop_stages).map(x => x.name).includes(value)
           break
-        case 'sub':
-          exists = Object.values(this.subrecommendations).map(x => x.description).includes(value)
-          break
+      case 'recommendation':
+        exists = Object.values(this.recommendations).map(x => x.description).includes(value)
+        break
+      case 'sub':
+        exists = Object.values(this.subrecommendations).map(x => x.description).includes(value)
+        break
       default: break
     }
 
@@ -141,6 +147,14 @@ class CropRecommedations extends CsvToFireStore {
         })
       }
 
+      // Extract unique crop stages
+      if (key === 'stage' && !this.itemExists('stage', row[item])) {
+        this.crop_stages.push({
+          id: this.crop_stages.length + 1,
+          name: row[item]
+        })
+      }
+
       // Extract unique activities
       if (key === 'activity' && !this.itemExists('activity', row[item])) {
         this.activities.push({
@@ -158,8 +172,8 @@ class CropRecommedations extends CsvToFireStore {
           const lines = row[item].split('\n')
 
           lines.forEach((line, index) => {
-            // const tempRec = { id: -1, subs: [] }
-            let tempRec = ''
+            const tempRec = { id: -1, subs: [] }
+            // let tempRec = ''
     
             if (this.isMainItem(line)) {
               const clean = this.removeSpecialChars(line)
@@ -171,11 +185,11 @@ class CropRecommedations extends CsvToFireStore {
                   description: clean
                 })
 
-                // tempRec.id = this.recommendations.length
-                tempRec += this.recommendations.length + '|'
+                tempRec.id = this.recommendations.length
+                // tempRec += this.recommendations.length + '|'
               } else {
-                // tempRec.id = this.recommendations.map(x => x.description).indexOf(clean)
-                tempRec += this.recommendations.map(x => x.description).indexOf(clean) + '|'
+                tempRec.id = this.recommendations.map(x => x.description).indexOf(clean)
+                // tempRec += this.recommendations.map(x => x.description).indexOf(clean) + '|'
               }
 
               // Check for succeeding sub-items
@@ -192,19 +206,18 @@ class CropRecommedations extends CsvToFireStore {
                       description: cleanSub
                     })
 
-                    // tempRec.subs.push(this.subrecommendations.length)
-                    tempRec += this.subrecommendations.length + '-'
+                    tempRec.subs.push(this.subrecommendations.length)
+                    // tempRec += this.subrecommendations.length + '-'
                   } else {
-                    // tempRec.subs.push(this.subrecommendations.map(x => x.description).indexOf(cleanSub))
-                    tempRec += this.subrecommendations.map(x => x.description).indexOf(cleanSub) + '-'
+                    tempRec.subs.push(this.subrecommendations.map(x => x.description).indexOf(cleanSub))
+                    // tempRec += this.subrecommendations.map(x => x.description).indexOf(cleanSub) + '-'
                   }
                 } else {
                   break
                 }
               }
 
-
-              recs.push(tempRec.substr(0, tempRec.length - 1))
+              recs.push(tempRec)
             }
           })
         } else {
