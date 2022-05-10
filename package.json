@@ -13,7 +13,7 @@
     "upload:villages": "node src/07_villages",
     "upload:calendars": "node src/08_crop_calendars",
     "upload:regions": "node src/09_regions_provinces",
-    "process:crop_recommenations": "node src/10_crop_recommendations",
+    "process:crop_recommendations": "node src/10_crop_recommendations",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

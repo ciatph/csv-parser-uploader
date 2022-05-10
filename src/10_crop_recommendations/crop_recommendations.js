@@ -24,6 +24,8 @@ class CropRecommedations extends CsvToFireStore {
 
     /** Sub recommendations { id, description } */
     this.subrecommendations = []
+
+    this.count = 1
   }
 
   /**
@@ -101,10 +103,32 @@ class CropRecommedations extends CsvToFireStore {
   }
 
   /**
+   * Encode unique MAIN crop recommendations
+   * @param {String} text - Main crop recommendation (cleaned)
+   */
+  createMainRecommendation (text) {
+    let id = -1
+
+    if (!this.itemExists('recommendation', text)) {
+      this.recommendations.push({
+        id: this.recommendations.length + 1,
+        description: text
+      })
+
+      id = this.recommendations.length
+    } else {
+      id = this.recommendations.find(x => x.description === text).id
+    }
+
+    return id
+  }
+
+  /**
    * Override CsvToFireStore's read() method to parse the crop recommedations CSV file
    * @param {Object} row - Read row in a CSV file with keys as CSV headers
    */
   read (row) {
+    this.count += 1
     const headers = Object.keys(row)
     const obj = {}
 
@@ -165,41 +189,40 @@ class CropRecommedations extends CsvToFireStore {
 
       const recs = []
 
-      // Extract unique recommendations across 'normal', 'wetter' and 'dry' conditions
+      // Extract unique MAIN and SUB recommendations across 'normal', 'wetter' and 'dry' conditions
       if (weatherConditions.map(x => x.toLowerCase()).includes(key)) {
         if (row[item].indexOf('•') >= 0) {
-          // List of main (nested) recommendations
+          // List of (nested lines) recommendations
+          // Succeeding lines may or may not have '•' or '-' prefix
           const lines = row[item].split('\n')
 
           lines.forEach((line, index) => {
-            const tempRec = { id: -1, subs: [] }
-            // let tempRec = ''
+            const tempRec = { id: -1, subs: [], ul: true }
     
-            if (this.isMainItem(line)) {
+            if (this.isMainItem(line) || (line.length > 0 && !this.isSubItem(line))) {
+              // MAIN recommendation
               const clean = this.removeSpecialChars(line)
 
-              // Extract unique main recommendations
-              if (!this.itemExists('recommendation', clean)) {
-                this.recommendations.push({
-                  id: this.recommendations.length + 1,
-                  description: clean
-                })
-
-                tempRec.id = this.recommendations.length
-                // tempRec += this.recommendations.length + '|'
-              } else {
-                tempRec.id = this.recommendations.map(x => x.description).indexOf(clean)
-                // tempRec += this.recommendations.map(x => x.description).indexOf(clean) + '|'
+              if (!this.isMainItem(line) && line.length > 0 && !this.isSubItem(line)) {
+                // These are lines with no '•' or '-' prefix
+                // Treat these as MAIN recommendations (for formatting purposes)
+                tempRec.ul = false
               }
 
-              // Check for succeeding sub-items
+              // Extract unique MAIN recommendations
+              tempRec.id = this.createMainRecommendation(clean)
+              if (tempRec.id === -1) {
+                throw new Error('Illegal ID')
+              }
+
+              // Check for succeeding sub-items (SUB recommendations)
               let idx = index + 1
 
               for (let i = idx; i < lines.length; i += 1) {
                 if (this.isSubItem(lines[i])) {
                   const cleanSub = this.removeSpecialChars(lines[i])
 
-                  // Extract unique sub recommendations
+                  // Extract unique SUB recommendations
                   if (!this.itemExists('sub', cleanSub)) {
                     this.subrecommendations.push({
                       id: this.subrecommendations.length + 1,
@@ -207,10 +230,8 @@ class CropRecommedations extends CsvToFireStore {
                     })
 
                     tempRec.subs.push(this.subrecommendations.length)
-                    // tempRec += this.subrecommendations.length + '-'
                   } else {
-                    tempRec.subs.push(this.subrecommendations.map(x => x.description).indexOf(cleanSub))
-                    // tempRec += this.subrecommendations.map(x => x.description).indexOf(cleanSub) + '-'
+                    tempRec.subs.push(this.subrecommendations.find(x => x.description === cleanSub).id)
                   }
                 } else {
                   break
@@ -221,8 +242,24 @@ class CropRecommedations extends CsvToFireStore {
             }
           })
         } else {
-          // One-liner (main)recommendations
-          console.log('normal recommendation')        
+          // One-liner recommendation
+          // These are lines with no '•' or '-' prefix
+          // Treat these as MAIN recommendations (for formatting purposes)
+          console.log('normal recommendation')
+
+          const lines = row[item].split('\n')
+
+          lines.forEach((line, index) => {
+            const tempRec = { id: -1, subs: [], ul: false }
+            const cleanMisc = this.removeSpecialChars(line)
+            tempRec.id = this.createMainRecommendation(cleanMisc)
+
+            if (tempRec.id === -1) {
+              throw new Error('Illegal ID')
+            }
+
+            recs.push(tempRec)
+          })
         }
       }
 
