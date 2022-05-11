@@ -6,44 +6,50 @@ const main = async () => {
   const upload = true
   const write = true
 
+  // Crop Recommendations-specific tables and firestore collection names
+  const newTables = {
+    provinces: 'n_provinces',
+    municipalities: 'n_municipalities',
+    crops: 'n_crops',
+    crop_stages: 'n_crop_stages',
+    activities: 'n_activities',
+    recommendations: 'n_list_recommendations',
+    subrecommendations: 'n_list_subrecommendations'
+  }
+
   try {
     console.log('Reading CSV...')
     await handler.readCSV()
 
     if (upload) {
       console.log('\nUploading data to firestore...')
-      await handler.firestoreUpload('n_crop_recommendations')
-      await handler.firestoreUpload('n_provinces', true, handler.provinces)
-      await handler.firestoreUpload('n_municipalities', true, handler.municipalities)
-      await handler.firestoreUpload('n_crops', true, handler.crops)
-      await handler.firestoreUpload('n_crop_stages', true, handler.crop_stages)
-      await handler.firestoreUpload('n_activities', true, handler.activities)
-      await handler.firestoreUpload('n_list_recommendations', true, handler.recommendations)
-      await handler.firestoreUpload('n_list_subrecommendations', true, handler.subrecommendations)
+      const toUpload = [handler.firestoreUpload('n_crop_recommendations')]
+
+      for (collection in newTables) {
+        toUpload.push(await handler.firestoreUpload(newTables[collection], true, handler[collection]))
+      }
+
+      await Promise.all(toUpload)
     }
 
     if (write) {
       console.log('\nWriting data to CSV...')
       handler.write(handler.data(), path.resolve(__dirname, 'data.csv'))
 
-      handler.write(handler.provinces, path.resolve(__dirname, 'provinces.csv'))
-      handler.write(handler.municipalities, path.resolve(__dirname, 'municipalities.csv'))
-      handler.write(handler.crops, path.resolve(__dirname, 'crops.csv'))
-      handler.write(handler.crop_stages, path.resolve(__dirname, 'crop_stages.csv'))
-      handler.write(handler.activities, path.resolve(__dirname, 'activities.csv'))
-      handler.write(handler.recommendations, path.resolve(__dirname, 'recommendations_masterlist.csv'))
-      handler.write(handler.subrecommendations, path.resolve(__dirname, 'recommendations_sub_masterlist.csv'))
+      for (collection in newTables) {
+        handler.write(handler[collection], path.resolve(__dirname, `${newTables[collection]}.csv`))
+      }
     }
 
     console.log('\n------------------------------\nProcessing finished. Stats:')
     console.log(`crop recommendations: ${handler.data().length}`)
-    console.log(`provinces: ${handler.provinces.length}`)
-    console.log(`municipalities: ${handler.municipalities.length}`)
-    console.log(`crops: ${handler.crops.length}`)
-    console.log(`crop_stages: ${handler.crop_stages.length}`)
-    console.log(`activities: ${handler.activities.length}`)
-    console.log(`main recommendations: ${handler.recommendations.length}`)
-    console.log(`sub recommendations: ${handler.subrecommendations.length}\n`)
+
+    for (collection in newTables) {
+      handler.write(handler[collection], path.resolve(__dirname, `${newTables[collection]}.csv`))
+      console.log(`${collection}: ${handler[collection].length}`)
+    }
+
+    console.log('\n')
   } catch (err) {
     console.log(err)
   }
