@@ -4,6 +4,7 @@ const CropRecommendations = require('./crop_recommendations')
 const main = async () => {
   const handler = new CropRecommendations(path.resolve(__dirname, 'Crop-Recommendations-CSV-File.csv'))
   const upload = true
+  const write = true
 
   try {
     console.log('Reading CSV...')
@@ -21,16 +22,18 @@ const main = async () => {
       await handler.firestoreUpload('n_list_subrecommendations', true, handler.subrecommendations)
     }
 
-    console.log('\nWriting data to CSV...')
-    handler.write(handler.data(), path.resolve(__dirname, 'data.csv'))
+    if (write) {
+      console.log('\nWriting data to CSV...')
+      handler.write(handler.data(), path.resolve(__dirname, 'data.csv'))
 
-    handler.write(handler.provinces, path.resolve(__dirname, 'provinces.csv'))
-    handler.write(handler.municipalities, path.resolve(__dirname, 'municipalities.csv'))
-    handler.write(handler.crops, path.resolve(__dirname, 'crops.csv'))
-    handler.write(handler.crop_stages, path.resolve(__dirname, 'crop_stages.csv'))
-    handler.write(handler.activities, path.resolve(__dirname, 'activities.csv'))
-    handler.write(handler.recommendations, path.resolve(__dirname, 'recommendations_masterlist.csv'))
-    handler.write(handler.subrecommendations, path.resolve(__dirname, 'recommendations_sub_masterlist.csv'))
+      handler.write(handler.provinces, path.resolve(__dirname, 'provinces.csv'))
+      handler.write(handler.municipalities, path.resolve(__dirname, 'municipalities.csv'))
+      handler.write(handler.crops, path.resolve(__dirname, 'crops.csv'))
+      handler.write(handler.crop_stages, path.resolve(__dirname, 'crop_stages.csv'))
+      handler.write(handler.activities, path.resolve(__dirname, 'activities.csv'))
+      handler.write(handler.recommendations, path.resolve(__dirname, 'recommendations_masterlist.csv'))
+      handler.write(handler.subrecommendations, path.resolve(__dirname, 'recommendations_sub_masterlist.csv'))
+    }
 
     console.log('\n------------------------------\nProcessing finished. Stats:')
     console.log(`crop recommendations: ${handler.data().length}`)

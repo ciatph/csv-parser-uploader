@@ -25,7 +25,7 @@ class CropRecommedations extends CsvToFireStore {
     /** Sub recommendations { id, description } */
     this.subrecommendations = []
 
-    this.count = 1
+    this.count = 0
   }
 
   /**
@@ -130,7 +130,7 @@ class CropRecommedations extends CsvToFireStore {
   read (row) {
     this.count += 1
     const headers = Object.keys(row)
-    const obj = {}
+    const obj = { id: this.count }
 
     headers.forEach(item => {
       const weatherConditions = ['Normal', 'Wetter', 'Drier']
