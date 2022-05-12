@@ -83,10 +83,14 @@ class CroppingCalendar extends CsvToFireStore {
 
       if (key === 'cropping system') {
         key = 'cropping_system'
+      } else if (key === 'prov') {
+        key = 'province'
+      } else if (key === 'muni') {
+        key = 'municipality'
       }
 
       // Extract unique provinces
-      if (key === 'prov' && !this.itemExists('province', row[item])) {
+      if (key === 'province' && !this.itemExists('province', row[item])) {
         this.provinces.push({
           id: this.provinces.length + 1,
           name: row[item]
@@ -94,7 +98,7 @@ class CroppingCalendar extends CsvToFireStore {
       }
 
       // Extract unique municipalities
-      if (key === 'muni' && !this.itemExists('municipality', row[item])) {
+      if (key === 'municipality' && !this.itemExists('municipality', row[item])) {
         this.municipalities.push({
           id: this.municipalities.length + 1,
           name: row[item],
@@ -119,7 +123,7 @@ class CroppingCalendar extends CsvToFireStore {
       }
 
       // Extract unique crop stages
-      if (!['prov', 'muni', 'crop', 'cropping_system'].includes(key)) {
+      if (!['province', 'municipality', 'crop', 'cropping_system'].includes(key)) {
         if (!this.itemExists('crop_stage', row[item])) {
           this.crop_stages.push({
             id: this.crop_stages.length + 1,
@@ -128,8 +132,19 @@ class CroppingCalendar extends CsvToFireStore {
         }
       }
 
-      if (include && ['prov', 'muni', 'crop', 'cropping_system'].includes(key)) {
-        obj[key] = row[item]
+      if (include && ['province', 'municipality', 'crop', 'cropping_system'].includes(key)) {
+        if (key === 'crop') {
+          // Clean and format data (follow Crop Recommendations CSV data naming convention)
+          if (row[item] === 'Rice_Irrigated') {
+            obj[key] = 'Irrigated Rice'
+          } else if (row[item] === 'Rice_Rainfed') {
+            obj[key] = 'Rainfed Rice'
+          } else {
+            obj[key] = row[item]
+          }
+        } else {
+          obj[key] = row[item]
+        }
       }
     })
 
