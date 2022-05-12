@@ -1,9 +1,9 @@
 const { CsvToFireStore } = require('csv-firestore')
 
 class CropRecommedations extends CsvToFireStore {
-  constructor(csvFilePath) {
+  constructor (csvFilePath) {
     super(csvFilePath)
-    
+
     /** Province { id, name }  */
     this.provinces = []
 
@@ -30,35 +30,35 @@ class CropRecommedations extends CsvToFireStore {
 
   /**
    * Check if a value exists in a specified Object[] array
-   * @param {String} param - Array name to check 
+   * @param {String} param - Array name to check
    * @param {*} value - Value to find in the Object[] array
    */
   itemExists (param, value) {
     let exists = false
 
     switch (param) {
-      case 'province':
-        exists = Object.values(this.provinces).map(x => x.name).includes(value)
-        break
-      case 'municipality':
-        exists = Object.values(this.municipalities).map(x => x.name).includes(value)
-        break
-      case 'crop':
-        exists = Object.values(this.crops).map(x => x.name).includes(value)
-        break
-      case 'activity':
-        exists = Object.values(this.activities).map(x => x.name).includes(value)
-        break
-        case 'stage':
-          exists = Object.values(this.crop_stages).map(x => x.name).includes(value)
-          break
-      case 'recommendation':
-        exists = Object.values(this.recommendations).map(x => x.description).includes(value)
-        break
-      case 'sub':
-        exists = Object.values(this.subrecommendations).map(x => x.description).includes(value)
-        break
-      default: break
+    case 'province':
+      exists = Object.values(this.provinces).map(x => x.name).includes(value)
+      break
+    case 'municipality':
+      exists = Object.values(this.municipalities).map(x => x.name).includes(value)
+      break
+    case 'crop':
+      exists = Object.values(this.crops).map(x => x.name).includes(value)
+      break
+    case 'activity':
+      exists = Object.values(this.activities).map(x => x.name).includes(value)
+      break
+    case 'stage':
+      exists = Object.values(this.crop_stages).map(x => x.name).includes(value)
+      break
+    case 'recommendation':
+      exists = Object.values(this.recommendations).map(x => x.description).includes(value)
+      break
+    case 'sub':
+      exists = Object.values(this.subrecommendations).map(x => x.description).includes(value)
+      break
+    default: break
     }
 
     return exists
@@ -73,7 +73,7 @@ class CropRecommedations extends CsvToFireStore {
       return ''
     }
 
-    let str = value.replace(/(\r\n|\n|\r|•)/gm, '')
+    const str = value.replace(/(\r\n|\n|\r|•)/gm, '')
     return str.charAt(0) === '-'
       ? str.slice(1)
       : str
@@ -81,7 +81,7 @@ class CropRecommedations extends CsvToFireStore {
 
   /**
    * Check if a text is a main recommendaation
-   * @param {String} text - Text to search 
+   * @param {String} text - Text to search
    */
   isMainItem (text) {
     if (text === undefined) {
@@ -93,8 +93,8 @@ class CropRecommedations extends CsvToFireStore {
 
   /**
    * Check if a text is a sub recommendaation
-   * @param {String} text - Text to search 
-   */  
+   * @param {String} text - Text to search
+   */
   isSubItem (text) {
     if (text === undefined) {
       return false
@@ -135,7 +135,7 @@ class CropRecommedations extends CsvToFireStore {
 
     headers.forEach(item => {
       const weatherConditions = ['Normal', 'Wetter', 'Drier']
-      let include = item.length > 0
+      const include = item.length > 0
 
       if (!include) {
         return
@@ -199,7 +199,7 @@ class CropRecommedations extends CsvToFireStore {
 
           lines.forEach((line, index) => {
             const tempRec = { id: -1, subs: [], ul: true }
-    
+
             if (this.isMainItem(line) || (line.length > 0 && !this.isSubItem(line))) {
               // MAIN recommendation
               const clean = this.removeSpecialChars(line)
@@ -217,7 +217,7 @@ class CropRecommedations extends CsvToFireStore {
               }
 
               // Check for succeeding sub-items (SUB recommendations)
-              let idx = index + 1
+              const idx = index + 1
 
               for (let i = idx; i < lines.length; i += 1) {
                 if (this.isSubItem(lines[i])) {
@@ -244,7 +244,7 @@ class CropRecommedations extends CsvToFireStore {
           })
         } else {
           // One-liner recommendation
-          // These are lines with no '•' or '-' prefix
+          // These csv cells lines with no '•' or '-' prefix
           // Treat these as MAIN recommendations (for formatting purposes)
           console.log('normal recommendation')
 
@@ -274,7 +274,7 @@ class CropRecommedations extends CsvToFireStore {
     })
 
     this.csv_rows.push(obj)
-  }  
+  }
 }
 
 module.exports = CropRecommedations

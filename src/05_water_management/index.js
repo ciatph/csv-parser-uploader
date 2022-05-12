@@ -15,12 +15,12 @@ const main = async () => {
     try {
       // Upload/write data
       const data = handler.data()
-  
+
       await Promise.all([
         handler.firestoreUpload('cr_water_mgt', true, data.water_mgt_list),
-        handler.firestoreUpload('cr_water_mgt_recommendations', true, data.recommendations_list),
+        handler.firestoreUpload('cr_water_mgt_recommendations', true, data.recommendations_list)
       ])
-  
+
       console.log('data uploaded!')
     } catch (err) {
       console.error(err.message)

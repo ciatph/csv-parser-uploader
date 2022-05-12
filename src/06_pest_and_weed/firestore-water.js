@@ -1,7 +1,7 @@
 const { CsvToFireStore } = require('csv-firestore')
 
 class FirestorePestWeedMgt extends CsvToFireStore {
-  constructor(csvFilePath) {
+  constructor (csvFilePath) {
     super(csvFilePath)
     console.log(`Reading ${csvFilePath}`)
 
@@ -29,7 +29,7 @@ class FirestorePestWeedMgt extends CsvToFireStore {
         name: row.con_wet
       })
     }
-    
+
     if (!this.csv_rows.recommendations.includes(row.con_drier)) {
       this.csv_rows.recommendations.push(row.con_drier)
       this.csv_rows.recommendations_list.push({
@@ -55,7 +55,7 @@ class FirestorePestWeedMgt extends CsvToFireStore {
   end () {
     this.write(this.csv_rows.pest_weed_mgt_list, 'cr_pestweed_mgt.csv')
     this.write(this.csv_rows.recommendations_list, 'cr_pestweed_mgt_recommendations.csv')
-  }  
+  }
 }
 
 module.exports = FirestorePestWeedMgt

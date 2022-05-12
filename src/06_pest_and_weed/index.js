@@ -15,12 +15,12 @@ const main = async () => {
     try {
       // Upload/write data
       const data = handler.data()
-  
+
       await Promise.all([
         handler.firestoreUpload('cr_pestweed_mgt', true, data.pest_weed_mgt_list),
-        handler.firestoreUpload('cr_pestweed_mgt_recommendations', true, data.recommendations_list),
+        handler.firestoreUpload('cr_pestweed_mgt_recommendations', true, data.recommendations_list)
       ])
-  
+
       console.log('data uploaded!')
     } catch (err) {
       console.error(err.message)

@@ -9,7 +9,7 @@ const { CsvToFireStore } = require('csv-firestore')
  *  - provinces list => cr_sel_varieties_provinces.csv
  */
 class FirestoreActivities extends CsvToFireStore {
-  constructor(csvFilePath) {
+  constructor (csvFilePath) {
     super(csvFilePath)
     console.log(`Reading ${csvFilePath}`)
 
@@ -39,7 +39,7 @@ class FirestoreActivities extends CsvToFireStore {
         name: row.con_wet
       })
     }
-    
+
     if (!this.csv_rows.recommendations.includes(row.con_drier)) {
       this.csv_rows.recommendations.push(row.con_drier)
       this.csv_rows.recommendations_list.push({
@@ -76,7 +76,7 @@ class FirestoreActivities extends CsvToFireStore {
     this.write(this.csv_rows.varieties_list, 'cr_sel_varieties.csv')
     this.write(this.csv_rows.recommendations_list, 'cr_sel_varieties_recommendations.csv')
     this.write(this.csv_rows.province_list, 'cr_sel_varieties_provinces.csv')
-  }  
+  }
 }
 
 module.exports = FirestoreActivities

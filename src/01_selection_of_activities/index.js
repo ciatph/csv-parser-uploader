@@ -15,13 +15,13 @@ const main = async () => {
     try {
       // Upload/write data
       const data = firestoreActivities.data()
-  
+
       await Promise.all([
         firestoreActivities.firestoreUpload('cr_sel_varieties', true, data.varieties_list),
         firestoreActivities.firestoreUpload('cr_sel_varieties_recommendations', true, data.recommendations_list),
         firestoreActivities.firestoreUpload('cr_sel_varieties_provinces', true, data.province_list)
       ])
-  
+
       console.log('data uploaded!')
     } catch (err) {
       console.error(err.message)
