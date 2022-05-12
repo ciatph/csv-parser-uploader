@@ -73,9 +73,10 @@ class CropRecommedations extends CsvToFireStore {
       return ''
     }
 
-    return value.replace(/(?!\w|\s)./g, '')
-      .replace(/\s+/g, ' ')
-      .replace(/^(\s*)([\W\w]*)(\b\s*$)/g, '$2')
+    let str = value.replace(/(\r\n|\n|\r|•)/gm, '')
+    return str.charAt(0) === '-'
+      ? str.slice(1)
+      : str
   }
 
   /**
