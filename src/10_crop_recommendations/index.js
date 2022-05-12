@@ -26,7 +26,7 @@ const main = async () => {
       const toUpload = [handler.firestoreUpload('n_crop_recommendations')]
 
       for (collection in newTables) {
-        toUpload.push(await handler.firestoreUpload(newTables[collection], true, handler[collection]))
+        toUpload.push(handler.firestoreUpload(newTables[collection], true, handler[collection]))
       }
 
       await Promise.all(toUpload)
