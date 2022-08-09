@@ -19,10 +19,10 @@ const main = async () => {
     const data = municipalities.data()
     const jsonData = {
       metadata: {
-        title: "Bicol Municipalities by Provinces",
-        description: "List of Bicol municipalities grouped by province",
-        source: "https://data.humdata.org/dataset/cod-ab-phl?",
-        file: "phl_adminboundaries_candidate_exclude_adm3.zip (phl_admbndp_admALL_psa_namria_itos_20200529.shp)",
+        title: 'Bicol Municipalities by Provinces',
+        description: 'List of Bicol municipalities grouped by province',
+        source: 'https://data.humdata.org/dataset/cod-ab-phl?',
+        file: 'phl_adminboundaries_candidate_exclude_adm3.zip (phl_admbndp_admALL_psa_namria_itos_20200529.shp)',
         date_created: Firestore.admin.firestore.Timestamp.now()
       },
       data
