@@ -18,20 +18,22 @@ const main = async () => {
   if (municipalities.data()) {
     const data = municipalities.data()
     const jsonData = {
-      metadata: {
-        title: 'Bicol Municipalities by Provinces',
-        description: 'List of Bicol municipalities grouped by province',
-        source: 'https://data.humdata.org/dataset/cod-ab-phl?',
-        file: 'phl_adminboundaries_candidate_exclude_adm3.zip (phl_admbndp_admALL_psa_namria_itos_20200529.shp)',
-        date_created: Firestore.admin.firestore.Timestamp.now()
-      },
-      data
+      municipalities: {
+        metadata: {
+          title: 'Bicol Municipalities by Provinces',
+          description: 'List of Bicol municipalities grouped by province',
+          source: 'https://data.humdata.org/dataset/cod-ab-phl?',
+          file: 'phl_adminboundaries_candidate_exclude_adm3.zip (phl_admbndp_admALL_psa_namria_itos_20200529.shp)',
+          date_created: '20220808'
+        },
+        data
+      }
     }
 
     try {
       const docRef = await Firestore.db
-        .collection('municipalities')
-        .doc('bicol')
+        .collection('constant_data')
+        .doc('region5')
         .set(jsonData)
       console.log(docRef)
     } catch (err) {
