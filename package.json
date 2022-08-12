@@ -26,7 +26,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "csv-firestore": "^1.0.9"
+    "csv-firestore": "^1.0.9",
+    "hili-lipsum": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^8.12.0",

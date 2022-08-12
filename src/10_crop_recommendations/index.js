@@ -14,7 +14,8 @@ const main = async () => {
     crop_stages: 'n_crop_stages',
     activities: 'n_activities',
     recommendations: 'n_list_recommendations',
-    subrecommendations: 'n_list_subrecommendations'
+    subrecommendations: 'n_list_subrecommendations',
+    smsrecommendations: 'n_smsrecommendations'
   }
 
   try {
