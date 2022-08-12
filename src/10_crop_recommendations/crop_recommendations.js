@@ -130,7 +130,7 @@ class CropRecommedations extends CsvToFireStore {
       // Generate a random sentence counterpart
       this.smsrecommendations.push({
         id,
-        description: this.#hiliwords.lipsum(40)
+        description: this.#hiliwords.lipsum(20)
       })
     } else {
       id = this.recommendations.find(x => x.description === text).id

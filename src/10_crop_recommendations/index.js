@@ -15,7 +15,7 @@ const main = async () => {
     activities: 'n_activities',
     recommendations: 'n_list_recommendations',
     subrecommendations: 'n_list_subrecommendations',
-    smsrecommendations: 'n_smsrecommendations'
+    smsrecommendations: 'n_list_smsrecommendations'
   }
 
   try {
