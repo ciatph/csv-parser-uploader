@@ -1,9 +1,11 @@
 const path = require('path')
+const { FirestoreData } = require('csv-firestore')
 const CropRecommendations = require('./crop_recommendations')
 
 const main = async () => {
+  const Firestore = new FirestoreData()
   const handler = new CropRecommendations(path.resolve(__dirname, 'Crop-Recommendations-CSV-File.csv'))
-  const upload = true
+  const upload = false
   const write = true
 
   // Crop Recommendations-specific tables and firestore collection names
@@ -31,6 +33,18 @@ const main = async () => {
       }
 
       await Promise.all(toUpload)
+
+      // Upload to simple data collection
+      const jsonData = {
+        mains: handler.recommendations,
+        subs: handler.subrecommendations,
+        sms: handler.smsrecommendations
+      }
+
+      await Firestore.db
+        .collection('recommendations')
+        .doc('data')
+        .set(jsonData)
     }
 
     if (write) {
