@@ -1,30 +1,18 @@
-require('dotenv').config()
 const path = require('path')
-const CropRecommendations = require('./crop_recommendations')
+const CroppingCalendar = require('./cropping_calendar')
 
 const main = async () => {
-  let handler
-
-  try {
-    handler = new CropRecommendations(
-      path.resolve(__dirname, 'Crop-Recommendations-CSV-File.csv'), process.env.REGION_NAME)
-  } catch (err) {
-    console.log(err.message)
-    process.exit(1)
-  }
-
+  const handler = new CroppingCalendar(path.resolve(__dirname, 'Cropping-Calendar_all.csv'))
   const upload = true
   const write = true
 
-  // Crop Recommendations-specific tables and firestore collection names
+  // Cropping Calendar-specific tables and firestore collection names
   const newTables = {
     provinces: 'n_provinces',
     municipalities: 'n_municipalities',
     crops: 'n_crops',
-    crop_stages: 'n_crop_stages',
-    activities: 'n_activities',
-    recommendations: 'n_list_recommendations',
-    subrecommendations: 'n_list_subrecommendations'
+    cropping_system: 'n_cropping_system',
+    crop_stages: 'n_crop_stages'
   }
 
   try {
@@ -33,13 +21,7 @@ const main = async () => {
 
     if (upload) {
       console.log('\nUploading data to firestore...')
-      const toUpload = [handler.firestoreUpload('n_crop_recommendations')]
-
-      for (collection in newTables) {
-        toUpload.push(handler.firestoreUpload(newTables[collection], true, handler[collection]))
-      }
-
-      await Promise.all(toUpload)
+      await handler.firestoreUpload('n_cropping_calendar_merged')
     }
 
     if (write) {
@@ -52,7 +34,7 @@ const main = async () => {
     }
 
     console.log('\n------------------------------\nProcessing finished. Stats:')
-    console.log(`crop recommendations: ${handler.data().length}`)
+    console.log(`cropping calendar: ${handler.data().length}`)
 
     for (collection in newTables) {
       handler.write(handler[collection], path.resolve(__dirname, `${newTables[collection]}.csv`))
@@ -62,10 +44,7 @@ const main = async () => {
     console.log('\n')
   } catch (err) {
     console.log(err)
-    process.exit(1)
   }
-
-  process.exit(0)
 }
 
 (async () => {

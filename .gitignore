@@ -1,4 +1,5 @@
 node_modules/
+logs/
 *.csv
 .env
 .env.prod
@@ -6,3 +7,8 @@ node_modules/
 .vscode/
 *.db
 .vscode/
+*.zip
+*.json
+
+!package.json
+!package-lock.json
