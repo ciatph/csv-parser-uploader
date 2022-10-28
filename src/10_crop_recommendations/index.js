@@ -1,11 +1,20 @@
+require('dotenv').config()
 const path = require('path')
 const { FirestoreData } = require('csv-firestore')
 const CropRecommendations = require('./crop_recommendations')
 
 const main = async () => {
   const Firestore = new FirestoreData()
-  const handler = new CropRecommendations(path.resolve(__dirname, 'Crop-Recommendations-CSV-File.csv'))
-  const upload = false
+
+  try {
+    handler = new CropRecommendations(
+      path.resolve(__dirname, 'Crop-Recommendations-CSV-File.csv'), process.env.REGION_NAME)
+  } catch (err) {
+    console.log(err.message)
+    process.exit(1)
+  }
+
+  const upload = true
   const write = true
 
   // Crop Recommendations-specific tables and firestore collection names
@@ -67,7 +76,10 @@ const main = async () => {
     console.log('\n')
   } catch (err) {
     console.log(err)
+    process.exit(1)
   }
+
+  process.exit(0)
 }
 
 (async () => {

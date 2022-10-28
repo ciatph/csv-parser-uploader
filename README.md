@@ -10,11 +10,12 @@ Parse normalized (general) rainfed rice recommendations data for the Crop Recomm
 
 ## Installation
 
-1. Clone this repository.  
+1. Clone this repository.
 `git clone https://github.com/ciatph/csv-parser-uploader.git`
-2. Install dependencies.  
+2. Install dependencies.
    - `npm install`
    - Set-up **csv-firestore**'s local Firebase requirements
+     - Create a `.env` file from the `.env.example` file. Supply your own variables.
 3. Copy associated CSV input files to their respective directories:
    - /01_selection_of_activities
    - /02_land_preparation
@@ -141,5 +142,5 @@ Upload the download URL list of each cropping calendars' hi-resolution picture.
 /misc_crop_calendars
 ```
 
-@ciatph  
+@ciatph
 20220324

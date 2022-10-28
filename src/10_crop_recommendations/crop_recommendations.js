@@ -5,8 +5,12 @@ class CropRecommedations extends CsvToFireStore {
   /** Random sentence generator */
   #hiliwords = null
 
-  constructor (csvFilePath) {
+  constructor (csvFilePath, region) {
     super(csvFilePath)
+
+    if (!region) {
+      throw new Error('Missing region parameter')
+    }
 
     /** Province { id, name }  */
     this.provinces = []
@@ -33,6 +37,8 @@ class CropRecommedations extends CsvToFireStore {
     this.smsrecommendations = []
 
     this.count = 0
+
+    this.region = region
 
     this.#hiliwords = new Hilipsum()
   }
@@ -166,7 +172,8 @@ class CropRecommedations extends CsvToFireStore {
       if (key === 'province' && !this.itemExists('province', row[item])) {
         this.provinces.push({
           id: this.provinces.length + 1,
-          name: row[item]
+          name: row[item],
+          region: this.region
         })
       }
 
