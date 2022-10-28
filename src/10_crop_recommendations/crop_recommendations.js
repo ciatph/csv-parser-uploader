@@ -1,8 +1,12 @@
 const { CsvToFireStore } = require('csv-firestore')
 
 class CropRecommedations extends CsvToFireStore {
-  constructor (csvFilePath) {
+  constructor (csvFilePath, region) {
     super(csvFilePath)
+
+    if (!region) {
+      throw new Error('Missing region parameter')
+    }
 
     /** Province { id, name }  */
     this.provinces = []
@@ -26,6 +30,8 @@ class CropRecommedations extends CsvToFireStore {
     this.subrecommendations = []
 
     this.count = 0
+
+    this.region = region
   }
 
   /**
@@ -151,7 +157,8 @@ class CropRecommedations extends CsvToFireStore {
       if (key === 'province' && !this.itemExists('province', row[item])) {
         this.provinces.push({
           id: this.provinces.length + 1,
-          name: row[item]
+          name: row[item],
+          region: this.region
         })
       }
 
