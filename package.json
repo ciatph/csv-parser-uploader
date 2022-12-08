@@ -16,6 +16,7 @@
     "process:crop_recommendations": "node src/10_crop_recommendations",
     "process:crop_calendar": "node src/11_cropping_calendar",
     "process:municipalities": "node src/12_bicol_municipalities",
+    "process:assets": "node src/13_assets",
     "lint": "eslint src --ignore-path .gitignore",
     "lint:fix": "eslint --ignore-path .gitignore --fix src"
   },
@@ -26,7 +27,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "csv-firestore": "^1.0.9"
+    "csv-firestore": "^1.0.9",
+    "hili-lipsum": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^8.12.0",
