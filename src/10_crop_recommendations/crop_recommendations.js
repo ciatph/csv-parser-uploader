@@ -1,6 +1,10 @@
+const { Hilipsum } = require('hili-lipsum')
 const { CsvToFireStore } = require('csv-firestore')
 
 class CropRecommedations extends CsvToFireStore {
+  /** Random sentence generator */
+  #hiliwords = null
+
   constructor (csvFilePath, region) {
     super(csvFilePath)
 
@@ -29,9 +33,14 @@ class CropRecommedations extends CsvToFireStore {
     /** Sub recommendations { id, description } */
     this.subrecommendations = []
 
+    /** Random words counterpart of each item in this.recommendations[]  */
+    this.smsrecommendations = []
+
     this.count = 0
 
     this.region = region
+
+    this.#hiliwords = new Hilipsum()
   }
 
   /**
@@ -123,6 +132,12 @@ class CropRecommedations extends CsvToFireStore {
       })
 
       id = this.recommendations.length
+
+      // Generate a random sentence counterpart
+      this.smsrecommendations.push({
+        id,
+        description: this.#hiliwords.lipsum(20)
+      })
     } else {
       id = this.recommendations.find(x => x.description === text).id
     }
@@ -196,9 +211,13 @@ class CropRecommedations extends CsvToFireStore {
       }
 
       const recs = []
+      let smsrecs = -1
 
       // Extract unique MAIN and SUB recommendations across 'normal', 'wetter' and 'dry' conditions
       if (weatherConditions.map(x => x.toLowerCase()).includes(key)) {
+        // Each condition will only have (1) random sentence
+        let smsRecommendation = -1
+
         if (row[item].indexOf('•') >= 0) {
           // List of (nested lines) recommendations
           // Succeeding lines may or may not have '•' or '-' prefix
@@ -221,6 +240,10 @@ class CropRecommedations extends CsvToFireStore {
               tempRec.id = this.createMainRecommendation(clean)
               if (tempRec.id === -1) {
                 throw new Error('Illegal ID')
+              }
+
+              if (smsRecommendation === -1) {
+                smsRecommendation = tempRec.id
               }
 
               // Check for succeeding sub-items (SUB recommendations)
@@ -249,6 +272,8 @@ class CropRecommedations extends CsvToFireStore {
               recs.push(tempRec)
             }
           })
+
+          smsrecs = smsRecommendation
         } else {
           // One-liner recommendation
           // These csv cells lines with no '•' or '-' prefix
@@ -266,14 +291,21 @@ class CropRecommedations extends CsvToFireStore {
               throw new Error('Illegal ID')
             }
 
+            if (smsRecommendation === -1) {
+              smsRecommendation = tempRec.id
+            }
+
             recs.push(tempRec)
           })
+
+          smsrecs = smsRecommendation
         }
       }
 
       if (include) {
         if (weatherConditions.map(x => x.toLowerCase()).includes(key)) {
           obj[key] = JSON.stringify(recs)
+          obj[`${key}_sms`] = smsrecs
         } else {
           obj[key] = row[item]
         }

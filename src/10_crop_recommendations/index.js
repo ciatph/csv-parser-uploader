@@ -1,9 +1,10 @@
 require('dotenv').config()
 const path = require('path')
+const { FirestoreData } = require('csv-firestore')
 const CropRecommendations = require('./crop_recommendations')
 
 const main = async () => {
-  let handler
+  const Firestore = new FirestoreData()
 
   try {
     handler = new CropRecommendations(
@@ -24,7 +25,8 @@ const main = async () => {
     crop_stages: 'n_crop_stages',
     activities: 'n_activities',
     recommendations: 'n_list_recommendations',
-    subrecommendations: 'n_list_subrecommendations'
+    subrecommendations: 'n_list_subrecommendations',
+    smsrecommendations: 'n_list_smsrecommendations'
   }
 
   try {
@@ -40,6 +42,18 @@ const main = async () => {
       }
 
       await Promise.all(toUpload)
+
+      // Upload to simple data collection
+      const jsonData = {
+        mains: handler.recommendations,
+        subs: handler.subrecommendations,
+        sms: handler.smsrecommendations
+      }
+
+      await Firestore.db
+        .collection('recommendations')
+        .doc('data')
+        .set(jsonData)
     }
 
     if (write) {
